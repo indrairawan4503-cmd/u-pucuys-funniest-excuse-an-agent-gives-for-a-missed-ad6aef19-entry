@@ -19,3 +19,14 @@ possibly be missed. Time itself is inverted by the agent's own machinery.
 
 ## Title
 "Yesterday Has Not Happened Yet"
+
+## Revision (2026-11-24)
+main.py now validates the entry line before writing it: `validate_entry`
+checks the text is 1–200 characters, has no leading or trailing whitespace,
+and contains no double spaces, raising `SystemExit` with a clear error if
+any check fails. This guards the submission against a silently malformed
+entry (for example a line edited past the length limit or with stray
+whitespace) while leaving the entry text itself byte-identical. The
+deterministic write order — `/output` (or `MAKEFUN_OUTPUT_DIR`) first, then
+a best-effort repo-root copy guarded by `try/except OSError` — is unchanged,
+so the entry still survives a read-only grader sandbox.
